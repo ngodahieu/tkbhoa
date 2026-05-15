@@ -407,7 +407,15 @@ onValue(scheduleRef, (snapshot) => {
 
     if(data){
 
-    scheduleData = data;
+    scheduleData = Array(shifts.length)
+.fill()
+.map((_,r)=>
+    Array(days.length)
+    .fill()
+    .map((_,c)=>
+        data?.[r]?.[c] || []
+    )
+);
 
 }else{
 
@@ -514,7 +522,6 @@ window.toggleName = function(r,c){
     if(!rawName){
 
         alert("Vui lòng nhập tên trước!");
-
         return;
     }
 
@@ -522,11 +529,23 @@ window.toggleName = function(r,c){
         rawName.charAt(0).toUpperCase() +
         rawName.slice(1).toLowerCase();
 
-    const slot =
-    scheduleData[r][c];
 
-    const index =
-    slot.indexOf(name);
+    // FIX FIREBASE STRUCTURE
+
+    if(!scheduleData[r]){
+
+        scheduleData[r] = [];
+    }
+
+    if(!scheduleData[r][c]){
+
+        scheduleData[r][c] = [];
+    }
+
+
+    const slot = scheduleData[r][c];
+
+    const index = slot.indexOf(name);
 
     if(index > -1){
 
@@ -537,7 +556,7 @@ window.toggleName = function(r,c){
         slot.push(name);
     }
 
-    // SAVE TO FIREBASE
+    // SAVE
 
     set(scheduleRef, scheduleData);
 };
