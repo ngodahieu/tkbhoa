@@ -390,6 +390,60 @@ th{
         #00cec9
     );
 }
+.best-slot{
+
+    position:relative;
+
+    border:2px solid #ffd32a !important;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,211,42,0.28),
+        rgba(255,159,67,0.18)
+    ) !important;
+
+    box-shadow:
+        0 0 18px rgba(255,211,42,0.45),
+        0 0 35px rgba(255,159,67,0.25);
+
+    animation: glow 2s infinite alternate;
+}
+
+.best-slot::before{
+
+    content:"🏆 HOT";
+
+    position:absolute;
+
+    top:8px;
+    right:8px;
+
+    font-size:10px;
+
+    padding:4px 8px;
+
+    border-radius:999px;
+
+    background:#ffd32a;
+
+    color:#111;
+
+    font-weight:700;
+}
+
+@keyframes glow{
+
+    from{
+
+        transform:scale(1);
+    }
+
+    to{
+
+        transform:scale(1.03);
+    }
+}
 </style>
 </head>
 
@@ -557,6 +611,19 @@ function initTable(){
 
     let html = '';
 
+    let maxCount = 0;
+
+scheduleData.forEach(row=>{
+
+    row.forEach(slot=>{
+
+        if(slot.length > maxCount){
+
+            maxCount = slot.length;
+        }
+    });
+});
+
     shifts.forEach((shift,r) => {
 
         html += `
@@ -609,7 +676,11 @@ function initTable(){
 
             html += `
             <td
-                class="slot ${level}"
+                class="
+slot
+${level}
+${count === maxCount && count > 0 ? 'best-slot' : ''}
+"
                 onclick="toggleName(${r},${c})"
             >
 
@@ -716,25 +787,60 @@ window.addShift = function(){
         return;
     }
 
-    // thêm ca mới
+    // data mới
+
+    const newRow =
+    Array(days.length)
+    .fill()
+    .map(()=>[]);
+
+    // thêm vào tạm
 
     shifts.push(value);
 
-    // thêm hàng mới vào data
+    scheduleData.push(newRow);
 
-    scheduleData.push(
-        Array(days.length)
-        .fill()
-        .map(()=>[])
-    );
+    // GHÉP shift + data
 
-    // save firebase
+    const combined =
+    shifts.map((shift,index)=>({
+
+        shift,
+        data: scheduleData[index]
+    }));
+
+
+    // SORT THEO GIỜ
+
+    combined.sort((a,b)=>{
+
+        const getHour = (text)=>{
+
+            const match =
+            text.match(/\d+/);
+
+            return match
+            ? parseInt(match[0])
+            : 999;
+        };
+
+        return getHour(a.shift)
+        - getHour(b.shift);
+    });
+
+
+    // TÁCH RA LẠI
+
+    shifts =
+    combined.map(item=>item.shift);
+
+    scheduleData =
+    combined.map(item=>item.data);
+
+
+    // SAVE
 
     saveData();
-
-    // render lại
-
-    initTable();
 
     input.value = '';
 };
