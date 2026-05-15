@@ -423,19 +423,6 @@ th{
     </button>
 
 </div>
-    <div class="add-time-box">
-
-    <input
-        type="text"
-        id="newShift"
-        placeholder="Ví dụ: 22:00 - 23:00"
-    >
-
-    <button onclick="addShift()">
-        + Thêm Ca
-    </button>
-
-</div>
 
     <div class="table-wrap">
         <table>
@@ -748,37 +735,6 @@ window.addShift = function(){
     // render lại
 
     initTable();
-
-    input.value = '';
-};
-window.addShift = function(){
-
-    const input =
-    document.getElementById("newShift");
-
-    const value =
-    input.value.trim();
-
-    if(!value){
-
-        alert("Nhập thời gian!");
-        return;
-    }
-
-    // thêm shift
-
-    shifts.push(value);
-
-    // thêm row data
-
-    scheduleData.push(
-
-        Array(days.length)
-        .fill()
-        .map(()=>[])
-    );
-
-    saveData();
 
     input.value = '';
 };
