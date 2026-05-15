@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Lịch Trống Nhóm Học</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --glass-bg: rgba(255,255,255,0.12);
+    --glass-border: rgba(255,255,255,0.2);
+    --text: #ffffff;
+    --primary: #6c5ce7;
+    --secondary: #00cec9;
+    --shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+
+body{
+    min-height:100vh;
+    font-family:'Poppins',sans-serif;
+    background:
+    radial-gradient(circle at top left,
+    rgba(108,92,231,0.25) 0%,
+    transparent 35%),
+
+    radial-gradient(circle at bottom right,
+    rgba(0,206,201,0.18) 0%,
+    transparent 35%),
+
+    linear-gradient(135deg,#0b1120,#111827);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:30px;
+    overflow-x:hidden;
+}
+
+/* Background blur balls */
+
+.blur{
+    position:fixed;
+    border-radius:50%;
+    filter:blur(80px);
+    opacity: 0.18;;
+    z-index:-1;
+}
+
+.blur1{
+    width:180px;
+    height:180px;
+    background:#6c5ce7;
+    top:-80px;
+    left:-80px;
+}
+
+.blur2{
+    width:160px;
+    height:160px;
+    background:#00cec9;
+    bottom:-60px;
+    right:-60px;
+}
+
+/* Main container */
+
+.container{
+    width:100%;
+    max-width:1100px;
+
+    background:var(--glass-bg);
+    border:1px solid var(--glass-border);
+
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+
+    border-radius:28px;
+
+    padding:30px;
+
+    box-shadow:var(--shadow);
+}
+
+/* Header */
+
+.header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.header h1{
+    color:white;
+    font-size:2.4rem;
+    margin-bottom:10px;
+    font-weight:700;
+}
+
+.header p{
+    color:rgba(255,255,255,.75);
+    font-size:14px;
+}
+
+/* User input */
+
+.user-box{
+    display:flex;
+    gap:15px;
+    justify-content:center;
+    align-items:center;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+}
+
+.input-wrap{
+    position:relative;
+}
+
+.input-wrap input{
+    width:280px;
+    padding:14px 18px;
+
+    border:none;
+    outline:none;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.12);
+
+    color:white;
+    font-size:15px;
+
+    transition:.3s;
+}
+
+.input-wrap input::placeholder{
+    color:rgba(255,255,255,.55);
+}
+
+.input-wrap input:focus{
+    border:1px solid rgba(255,255,255,.4);
+    background:rgba(255,255,255,0.12);
+    transform:translateY(-2px);
+}
+
+/* Table */
+
+.table-wrap{
+    overflow-x:auto;
+    border-radius:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:10px;
+    min-width:850px;
+}
+
+/* Header cells */
+
+th{
+    background:rgba(255,255,255,0.12);
+
+    backdrop-filter:blur(10px);
+
+    color:white;
+
+    padding:15px;
+
+    border-radius:16px;
+
+    font-size:14px;
+    font-weight:600;
+}
+
+/* Slot */
+
+.slot{
+    background:rgba(255,255,255,0.08);
+
+    border:1px solid rgba(255,255,255,0.1);
+
+    border-radius:18px;
+
+    padding:15px;
+
+    min-height:100px;
+
+    cursor:pointer;
+
+    transition:.25s ease;
+
+    color:white;
+
+    position:relative;
+}
+
+.slot:hover{
+    transform:translateY(-4px) scale(1.02);
+
+    background:rgba(255,255,255,0.14);
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.2),
+        0 0 15px rgba(255,255,255,0.08);
+}
+
+/* Availability levels */
+
+.level-low{
+    background:rgba(46,204,113,0.18);
+    border:1px solid rgba(46,204,113,0.4);
+}
+
+.level-med{
+    background:rgba(241,196,15,0.18);
+    border:1px solid rgba(241,196,15,0.4);
+}
+
+.level-high{
+    background:rgba(231,76,60,0.22);
+    border:1px solid rgba(231,76,60,0.45);
+}
+
+/* Count */
+
+.count{
+    font-size:15px;
+    font-weight:600;
+    margin-bottom:10px;
+}
+
+/* Names */
+
+.name-tag{
+    font-size:12px;
+    line-height:1.5;
+    color:rgba(255,255,255,.8);
+}
+
+/* Shift label */
+
+.shift-label{
+    color:white;
+    font-weight:600;
+    font-size:14px;
+    background:rgba(255,255,255,0.1);
+    border-radius:18px;
+    min-width:180px;
+}
+
+/* Footer */
+
+.footer{
+    margin-top:25px;
+    text-align:center;
+    color:rgba(255,255,255,.6);
+    font-size:13px;
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+    .container{
+        padding:20px;
+    }
+
+    .header h1{
+        font-size:1.8rem;
+    }
+
+    .input-wrap input{
+        width:100%;
+    }
+
+    .user-box{
+        flex-direction:column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="blur blur1"></div>
+<div class="blur blur2"></div>
+
+<div class="container">
+
+    <div class="header">
+        <h1>📅 Lịch Trống Nhóm Học</h1>
+        <p>Chọn thời gian bạn rảnh để tìm lịch học phù hợp cho cả nhóm</p>
+    </div>
+
+    <div class="user-box">
+        <div class="input-wrap">
+            <input type="text" id="userName" placeholder="Nhập tên của bạn...">
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Ca / Thứ</th>
+                    <th>T2</th>
+                    <th>T3</th>
+                    <th>T4</th>
+                    <th>T5</th>
+                    <th>T6</th>
+                    <th>T7</th>
+                    <th>CN</th>
+                </tr>
+            </thead>
+
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        ✨ Glassmorphism Study Planner UI
+    </div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getDatabase,
+    ref,
+    set,
+    onValue
+} from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+
+  apiKey: "AIzaSyDicw8txyOD7V2DjsefqPiJcGt5agsvgB8",
+
+  authDomain: "lich-d46cb.firebaseapp.com",
+
+  databaseURL:
+  "https://lich-d46cb-default-rtdb.asia-southeast1.firebasedatabase.app",
+
+  projectId: "lich-d46cb",
+
+  storageBucket: "lich-d46cb.firebasestorage.app",
+
+  messagingSenderId: "151253095023",
+
+  appId: "1:151253095023:web:2cf93e927e4fe7cd00b39a",
+
+  measurementId: "G-92SDTJD9ZN"
+};
+
+
+// INIT FIREBASE
+
+const app = initializeApp(firebaseConfig);
+
+const db = getDatabase(app);
+
+
+// DATA
+
+const days = ["T2","T3","T4","T5","T6","T7","CN"];
+
+const shifts = [
+    "🌅 Sáng",
+    "☀️ Chiều",
+    "🌙 Tối"
+];
+
+let scheduleData = Array(shifts.length)
+.fill()
+.map(() =>
+    Array(days.length)
+    .fill()
+    .map(() => [])
+);
+
+
+// DATABASE REF
+
+const scheduleRef = ref(db, "scheduleData");
+
+
+// REALTIME LISTENER
+
+onValue(scheduleRef, (snapshot) => {
+
+    const data = snapshot.val();
+
+    if(data){
+
+        scheduleData = data;
+    }
+
+    initTable();
+});
+
+
+// INIT TABLE
+
+function initTable(){
+
+    const tbody =
+    document.getElementById("tableBody");
+
+    let html = '';
+
+    shifts.forEach((shift,r) => {
+
+        html += `
+        <tr>
+
+            <td class="shift-label">
+                ${shift}
+            </td>
+        `;
+
+        days.forEach((day,c) => {
+
+            const names =
+            scheduleData[r][c];
+
+            const count =
+            names.length;
+
+            let level = '';
+
+            if(count > 0 && count <= 2){
+
+                level = 'level-low';
+
+            }else if(count > 2 && count <= 4){
+
+                level = 'level-med';
+
+            }else if(count > 4){
+
+                level = 'level-high';
+            }
+
+            html += `
+            <td
+                class="slot ${level}"
+                onclick="toggleName(${r},${c})"
+            >
+
+                <div class="count">
+
+                    ${
+                        count
+                        ? `👥 ${count} người rảnh`
+                        : '✨ Trống'
+                    }
+
+                </div>
+
+                <div class="name-tag">
+
+                    ${
+                        names
+                        .map(n => `• ${n}`)
+                        .join('<br>')
+                    }
+
+                </div>
+
+            </td>
+            `;
+        });
+
+        html += `</tr>`;
+    });
+
+    tbody.innerHTML = html;
+}
+
+
+// TOGGLE NAME
+
+window.toggleName = function(r,c){
+
+    const rawName =
+    document.getElementById("userName")
+    .value
+    .trim();
+
+    if(!rawName){
+
+        alert("Vui lòng nhập tên trước!");
+
+        return;
+    }
+
+    const name =
+        rawName.charAt(0).toUpperCase() +
+        rawName.slice(1).toLowerCase();
+
+    const slot =
+    scheduleData[r][c];
+
+    const index =
+    slot.indexOf(name);
+
+    if(index > -1){
+
+        slot.splice(index,1);
+
+    }else{
+
+        slot.push(name);
+    }
+
+    // SAVE TO FIREBASE
+
+    set(scheduleRef, scheduleData);
+};
+
+</script>
+
+</body>
+</html>
