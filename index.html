@@ -407,8 +407,18 @@ onValue(scheduleRef, (snapshot) => {
 
     if(data){
 
-        scheduleData = data;
-    }
+    scheduleData = data;
+
+}else{
+
+    scheduleData = Array(shifts.length)
+    .fill()
+    .map(() =>
+        Array(days.length)
+        .fill()
+        .map(() => [])
+    );
+}
 
     initTable();
 });
@@ -435,8 +445,7 @@ function initTable(){
 
         days.forEach((day,c) => {
 
-            const names =
-            scheduleData[r][c];
+            const names = scheduleData?.[r]?.[c] || [];
 
             const count =
             names.length;
